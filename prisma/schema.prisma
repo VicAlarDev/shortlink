@@ -1,0 +1,54 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  email      String    @unique
+  password   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  shortUrls  ShortUrl[]
+  sessions   Session[]
+}
+
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  expiresAt DateTime
+}
+
+model ShortUrl {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  originalUrl String
+  shortCode   String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  expiresAt   DateTime?
+  userId      String    @db.ObjectId
+  user        User      @relation(fields: [userId], references: [id])
+  clicks      Click[]
+}
+
+model Click {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  shortUrl  ShortUrl @relation(fields: [shortUrlId], references: [id])
+  shortUrlId String  @db.ObjectId
+  clickedAt DateTime @default(now())
+  referer   String?  // Optional, not all clicks will have a referer
+  country   String?  // Optional, determined by IP address analysis if available
+}
+
+model RateLimiterFlexible {
+  key     String   @id @map("_id") @db.ObjectId
+  points  Int
+  expire  DateTime?
+}
