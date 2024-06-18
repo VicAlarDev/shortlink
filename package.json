@@ -1,7 +1,9 @@
 {
   "name": "my-app",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsx src/index.ts",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.11.3",
