@@ -1,13 +1,9 @@
+[build.nixpacksPlan.phases.install]
+dependsOn = ["setup"]
+cmds = "npm i"
+
 [build]
-# Comando para instalar las dependencias
-install = "npm install"
-
-# Comando para construir la aplicación
-build = "npm run build"
-
-# Comando para iniciar la aplicación
-start = "npm run start"
+buildCommand = "npm run build"
 
 [deploy]
-# Imagen base para el despliegue
-baseImage = "node:18"
+start = "npm run start"
