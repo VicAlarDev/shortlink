@@ -1,6 +1,7 @@
 {
   "name": "shortlink",
   "type": "module",
+  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsx src/index.ts",
