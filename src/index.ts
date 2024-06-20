@@ -15,13 +15,11 @@ import {
   redirectUrlRoute,
   createShortenUrlRoute,
   createShortenUrlHandler,
-} from "@controllers/index";
+} from "@controllers/url/index";
 import type { JwtVariables } from "hono/jwt";
-import { jwt } from "hono/jwt";
 import { registerRoute, registerHandler } from "./controllers/auth/register";
 import { loginHandler, loginRoute } from "./controllers/auth/login";
 import { authMiddleware } from "./middlewares/auth";
-import { rateLimiter } from "hono-rate-limiter";
 import { rateLimiterMiddleware } from "./middlewares/RateLimiter";
 
 type Variables = JwtVariables;
@@ -85,3 +83,5 @@ serve({
 });
 
 console.log(`🚀 Server is running on port ${appConfig.APP_PORT}`);
+
+export default app;

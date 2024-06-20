@@ -2,22 +2,24 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
+    "lib": ["ESNext", "DOM"],
+    "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["node", "jest", "supertest", "bcrypt"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/*"],
       "@base/*": ["src/*"],
       "@api/*": ["src/api/*"],
       "@config/*": ["src/config/*"],
-      "@controllers/*": ["src/controllers/url/*"],
+      "@controllers/*": ["src/controllers/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@models/*": ["src/models/*"],
       "@utils/*": ["src/utils/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

@@ -32,6 +32,14 @@ export class NotFoundError extends Error {
   }
 }
 
+export class AlreadyExistsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AlreadyExistsError";
+    this.message = message;
+  }
+}
+
 export function makeError<TError extends Error>(error: TError) {
   const defaultError = {
     name: error.name,
@@ -48,7 +56,7 @@ export function makeError<TError extends Error>(error: TError) {
 
   if (error instanceof UnauthorizedError) {
     return {
-      statusCode: 403,
+      statusCode: 401,
       error: defaultError,
     };
   }
@@ -63,6 +71,13 @@ export function makeError<TError extends Error>(error: TError) {
   if (error instanceof NotFoundError) {
     return {
       statusCode: 404,
+      error: defaultError,
+    };
+  }
+
+  if (error instanceof AlreadyExistsError) {
+    return {
+      statusCode: 409,
       error: defaultError,
     };
   }

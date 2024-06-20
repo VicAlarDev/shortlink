@@ -1,5 +1,5 @@
-import { NotFoundError } from "@base/utils/Error";
-import { createRoute } from "@hono/zod-openapi";
+import { AlreadyExistsError, UnauthorizedError } from "@base/utils/Error";
+import { createRoute, z } from "@hono/zod-openapi";
 import { appConfig } from "@base/config/app";
 import { type Handler } from "hono";
 import {
@@ -36,10 +36,31 @@ export const createShortenUrlRoute = createRoute({
       description: "Shortened URL created",
     },
   },
+  401: {
+    content: {
+      "application/json": {
+        schema: z.object({
+          error: z.string(),
+        }),
+      },
+    },
+    description: "Unauthorized",
+  },
+  400: {
+    content: {
+      "application/json": {
+        schema: z.object({
+          error: z.string(),
+        }),
+      },
+    },
+    description: "Bad request",
+  },
 });
 
 export const createShortenUrlHandler: Handler = async (c) => {
   const body = (await c.req.json()) as CreateShortenUrl;
+  console.log("Request body:", body);
 
   // Check if the shortCode is already taken
   const existingShortUrl = await db.shortUrl.findFirst({
@@ -47,9 +68,10 @@ export const createShortenUrlHandler: Handler = async (c) => {
       shortCode: appConfig.BASE_URL + "/" + body.shortCode,
     },
   });
+  console.log("Existing short URL:", existingShortUrl);
 
   if (existingShortUrl) {
-    throw new NotFoundError("Short code already taken");
+    throw new AlreadyExistsError("Short code already taken");
   }
 
   const newUrl = appConfig.BASE_URL + "/" + body.shortCode;
@@ -65,9 +87,9 @@ export const createShortenUrlHandler: Handler = async (c) => {
       originalUrl: body.originalUrl,
       shortCode: newUrl,
       expiresAt,
-      userId: user.id, // Asociar la URL acortada con el usuario autenticado
+      userId: user.id,
     },
   });
-
+  console.log("Created short URL:", shortUrl);
   return c.json(shortUrl, { status: 201 });
 };

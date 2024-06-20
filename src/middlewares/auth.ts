@@ -7,6 +7,7 @@ import { getCookie } from "hono/cookie";
 
 export const authMiddleware = createMiddleware(async (c, next) => {
   const token = getCookie(c, "shortlink-token");
+  console.log("Token received:", token);
   if (!token) {
     return c.json({ error: "No token provided" }, 401);
   }

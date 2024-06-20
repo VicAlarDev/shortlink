@@ -1,5 +1,5 @@
-import { NotFoundError } from "@base/utils/Error";
-import { createRoute } from "@hono/zod-openapi";
+import { AlreadyExistsError } from "@base/utils/Error";
+import { createRoute, z } from "@hono/zod-openapi";
 import { appConfig } from "@base/config/app";
 import { type Handler } from "hono";
 import { registerSchema, userSchema, type Register } from "./schema";
@@ -30,6 +30,16 @@ export const registerRoute = createRoute({
       },
       description: "User registered",
     },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            error: z.string(),
+          }),
+        },
+      },
+      description: "Email already taken",
+    },
   },
 });
 
@@ -44,7 +54,7 @@ export const registerHandler: Handler = async (c) => {
   });
 
   if (existingUser) {
-    throw new NotFoundError("Email already taken");
+    throw new AlreadyExistsError("Email already taken");
   }
 
   // Hash the password
