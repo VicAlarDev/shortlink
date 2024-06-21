@@ -4,7 +4,7 @@
   "packageManager": "pnpm@9.4.0",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsx src/index.ts",
+    "build": "tsc",
     "start": "node dist/index.js",
     "cleandb": "cross-env NODE_ENV=test npx prisma db push reset --force-reset",
     "test": "dotenv -e .env.test -- npm run cleandb && jest"

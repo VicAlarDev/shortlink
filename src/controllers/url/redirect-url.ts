@@ -44,10 +44,13 @@ export const redirectUrlHandler: Handler = async (c) => {
     c.req.header("X-Real-IP") ||
     c.req.header("CF-Connecting-IP") ||
     c.req.raw.headers.get("CF-Connecting-IP");
-  const geo = geoip.lookup(ip);
+  let geo;
+  if (ip) {
+    geo = geoip.lookup(ip);
+  }
+
   const country = geo ? geo.country : null;
   const url = appConfig.BASE_URL + "/" + shortCode;
-  console.log("country", country);
 
   const shortUrl = await db.shortUrl.findFirst({
     where: {
