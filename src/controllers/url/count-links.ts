@@ -5,14 +5,14 @@ import { type Handler } from "hono";
 import { shortUrlSchema } from "./schema";
 import db from "@base/config/db/db";
 import { authMiddleware } from "@base/middlewares/auth";
+import { link } from "fs";
 
-export const getAllUrlRoute = createRoute({
+export const countAllUrlRoute = createRoute({
 	method: "get",
-	path: "/api/all",
+	path: "/api/all/count",
 	tags: ["Get all URL"],
-	middlewares: [authMiddleware],
-	summary: "Get all shortened URL",
-	description: "Get all shortened URL",
+	summary: "Count all shortened URL",
+	description: "Count all shortened URL",
 	responses: {
 		200: {
 			description: "Get all shortened URL",
@@ -25,17 +25,10 @@ export const getAllUrlRoute = createRoute({
 	},
 });
 
-export const getAllUrlHandler: Handler = async (c) => {
-	const user = c.get("user");
+export const countAllUrlHandler: Handler = async (c) => {
+	const countLinks = await db.shortUrl.count();
+	const countUsers = await db.user.count();
+	const countClicks = await db.click.count();
 
-	if (!user) {
-		throw new NotFoundError("User not found");
-	}
-	const shortUrls = await db.shortUrl.findMany({
-		where: {
-			userId: user.id,
-		},
-	});
-
-	return c.json(shortUrls);
+	return c.json({ links: countLinks, users: countUsers, clicks: countClicks });
 };
