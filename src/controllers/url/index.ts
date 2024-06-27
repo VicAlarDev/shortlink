@@ -4,3 +4,4 @@ export * from "./get-all-url";
 export * from "./get-url";
 export * from "./count-links";
 export * from "./create-url-random";
+export * from "./get-stats-random-url";

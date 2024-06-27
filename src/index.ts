@@ -19,6 +19,8 @@ import {
 	countAllUrlRoute,
 	createShortenUrlRandomHandler,
 	createShortenUrlRandomRoute,
+	getRandomUrlHandler,
+	getRandomUrlRoute,
 } from "@controllers/url/index";
 import type { JwtVariables } from "hono/jwt";
 import { registerRoute, registerHandler } from "./controllers/auth/register";
@@ -77,6 +79,7 @@ app.openapi(registerRoute, registerHandler);
 app.openapi(loginRoute, loginHandler);
 app.openapi(countAllUrlRoute, countAllUrlHandler);
 app.openapi(createShortenUrlRandomRoute, createShortenUrlRandomHandler);
+app.openapi(getRandomUrlRoute, getRandomUrlHandler);
 
 /* Protected routes */
 app.openapi(

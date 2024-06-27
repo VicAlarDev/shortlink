@@ -3,8 +3,8 @@ import { createMiddleware } from "hono/factory";
 import db from "@base/config/db/db";
 
 const rateLimiter = new RateLimiterMemory({
-  points: 1,
-  duration: 60,
+	points: 5,
+	duration: 60,
 });
 
 const html = `
@@ -60,13 +60,13 @@ const html = `
 `;
 
 export const rateLimiterMiddleware = createMiddleware(async (c, next) => {
-  const url = c.req.url;
+	const url = c.req.url;
 
-  try {
-    await rateLimiter.consume(url, 1);
-    await next();
-  } catch (rejRes) {
-    // return c.json({ error: "Too many requests" }, 429);
-    return c.html(html);
-  }
+	try {
+		await rateLimiter.consume(url, 1);
+		await next();
+	} catch (rejRes) {
+		// return c.json({ error: "Too many requests" }, 429);
+		return c.html(html);
+	}
 });
