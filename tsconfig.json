@@ -1,28 +1,35 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "lib": ["ESNext", "DOM"],
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "types": ["node", "jest", "supertest", "bcrypt"],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "paths": {
-      "@base/*": ["src/*"],
-      "@api/*": ["src/api/*"],
-      "@config/*": ["src/config/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@middlewares/*": ["src/middlewares/*"],
-      "@models/*": ["src/models/*"],
-      "@utils/*": ["src/utils/*"]
-    }
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+	"compilerOptions": {
+		"target": "es6",
+		"module": "ESNext",
+		"composite": true,
+		"moduleResolution": "node",
+		"lib": ["ESNext", "DOM"],
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"types": ["node", "jest", "supertest", "bcrypt"],
+		"jsx": "react-jsx",
+		"jsxImportSource": "hono/jsx",
+		"importHelpers": true,
+		"baseUrl": "./",
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"paths": {
+			"@base/*": ["./src/*"],
+			"@api/*": ["./src/api/*"],
+			"@config/*": ["./src/config/*"],
+			"@controllers/*": ["./src/controllers/*"],
+			"@middlewares/*": ["./src/middlewares/*"],
+			"@models/*": ["./src/models/*"],
+			"@utils/*": ["./src/utils/*"]
+		},
+		"plugins": [{ "transform": "typescript-transform-paths" }]
+	},
+	"tsc-alias": {
+		"resolveFullPaths": true
+	},
+	"include": ["./src/**/*.ts", "tests/**/*.ts", "package.json"]
 }

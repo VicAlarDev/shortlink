@@ -1,10 +1,9 @@
 import { NotFoundError } from "@base/utils/Error";
 import { createRoute, z } from "@hono/zod-openapi";
-import { appConfig } from "@base/config/app";
 import { type Handler } from "hono";
 import db from "@base/config/db/db";
 import { authMiddleware } from "@middlewares/auth";
-import countries from "@base/utils/countries.json";
+import { countries } from "@base/utils/countries";
 
 export const getAllUserLinksRoute = createRoute({
 	method: "get",

@@ -5,6 +5,7 @@ import { type Handler } from "hono";
 import { shortUrlSchema } from "./schema";
 import db from "@base/config/db/db";
 import { authMiddleware } from "@base/middlewares/auth";
+import type { ShortUrl } from "@prisma/client";
 
 export const getAllUrlRoute = createRoute({
 	method: "get",
@@ -44,7 +45,7 @@ export const getAllUrlHandler: Handler = async (c) => {
 
 	const currentDate = new Date();
 
-	const shortUrlsWithStatus = shortUrls.map((shortUrl) => {
+	const shortUrlsWithStatus = shortUrls.map((shortUrl: ShortUrl) => {
 		const expiresAt = new Date(shortUrl.expiresAt);
 		const status = expiresAt > currentDate ? "Active" : "Expired";
 		return { ...shortUrl, status };
