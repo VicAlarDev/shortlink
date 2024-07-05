@@ -3,7 +3,7 @@ import { createMiddleware } from "hono/factory";
 import db from "@base/config/db/db";
 
 const rateLimiter = new RateLimiterMemory({
-	points: 5,
+	points: 20,
 	duration: 60,
 });
 

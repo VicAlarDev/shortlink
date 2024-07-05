@@ -18,7 +18,11 @@ export const getAllUrlRoute = createRoute({
 			description: "Get all shortened URL",
 			content: {
 				"application/json": {
-					schema: z.array(shortUrlSchema),
+					schema: z.array(
+						shortUrlSchema.extend({
+							status: z.enum(["Active", "Expired"]),
+						})
+					),
 				},
 			},
 		},
@@ -31,11 +35,20 @@ export const getAllUrlHandler: Handler = async (c) => {
 	if (!user) {
 		throw new NotFoundError("User not found");
 	}
+
 	const shortUrls = await db.shortUrl.findMany({
 		where: {
 			userId: user.id,
 		},
 	});
 
-	return c.json(shortUrls);
+	const currentDate = new Date();
+
+	const shortUrlsWithStatus = shortUrls.map((shortUrl) => {
+		const expiresAt = new Date(shortUrl.expiresAt);
+		const status = expiresAt > currentDate ? "Active" : "Expired";
+		return { ...shortUrl, status };
+	});
+
+	return c.json(shortUrlsWithStatus);
 };

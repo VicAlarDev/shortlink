@@ -32,7 +32,7 @@ model ShortUrl {
   shortCode   String    @unique
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
-  expiresAt   DateTime?
+  expiresAt   DateTime
   userId      String?   @db.ObjectId
   user        User?     @relation(fields: [userId], references: [id])
   clicks      Click[]
@@ -43,8 +43,9 @@ model Click {
   shortUrl   ShortUrl @relation(fields: [shortUrlId], references: [id])
   shortUrlId String   @db.ObjectId
   clickedAt  DateTime @default(now())
-  referer    String?  // Optional, not all clicks will have a referer
-  country    String?  // Optional, determined by IP address analysis if available
+  referer    String?  
+  country    String?  
+  visitorId   String?
 }
 
 model RateLimiterFlexible {

@@ -21,6 +21,10 @@ import {
 	createShortenUrlRandomRoute,
 	getRandomUrlHandler,
 	getRandomUrlRoute,
+	deleteUrlHandler,
+	deleteUrlRoute,
+	getAllUserLinksHandler,
+	getAllUserLinksRoute,
 } from "@controllers/url/index";
 import type { JwtVariables } from "hono/jwt";
 import { registerRoute, registerHandler } from "./controllers/auth/register";
@@ -28,6 +32,10 @@ import { loginHandler, loginRoute } from "./controllers/auth/login";
 import { authMiddleware } from "./middlewares/auth";
 import { rateLimiterMiddleware } from "./middlewares/RateLimiter";
 import { cors } from "hono/cors";
+import {
+	validateTokenRoute,
+	validateTokenRouteHandler,
+} from "./controllers/auth/validate";
 
 type Variables = JwtVariables;
 
@@ -77,6 +85,7 @@ app.openapi(
 );
 app.openapi(registerRoute, registerHandler);
 app.openapi(loginRoute, loginHandler);
+app.openapi(validateTokenRoute, validateTokenRouteHandler);
 app.openapi(countAllUrlRoute, countAllUrlHandler);
 app.openapi(createShortenUrlRandomRoute, createShortenUrlRandomHandler);
 app.openapi(getRandomUrlRoute, getRandomUrlHandler);
@@ -91,6 +100,14 @@ app.openapi(
 	getAllUrlHandler
 );
 app.openapi({ middleware: authMiddleware, ...getUrlRoute }, getUrlHandler);
+app.openapi(
+	{ middleware: authMiddleware, ...deleteUrlRoute },
+	deleteUrlHandler
+);
+app.openapi(
+	{ middleware: authMiddleware, ...getAllUserLinksRoute },
+	getAllUserLinksHandler
+);
 
 serve({
 	fetch: app.fetch,

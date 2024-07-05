@@ -5,3 +5,5 @@ export * from "./get-url";
 export * from "./count-links";
 export * from "./create-url-random";
 export * from "./get-stats-random-url";
+export * from "./delete-url";
+export * from "./get-full-stats";
